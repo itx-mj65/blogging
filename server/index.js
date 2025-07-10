@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import connectDB from './config/DB.js'; // Assuming db.js is in the same directory
 import AuthRoute from './Routes/AuthRoites.js';
 import UserRoute from './Routes/UserRoute.js';
+import CategoryRoute from './Routes/CategoryRoute.js';
 const app = express();
 dotenv.config();
 const port = process.env.PORT || 3000;
@@ -23,6 +24,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/auth", AuthRoute)
 app.use("/api/user", UserRoute)
+app.use("/api/category", CategoryRoute)
 
 
 

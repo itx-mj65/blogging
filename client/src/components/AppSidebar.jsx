@@ -16,6 +16,7 @@ import { FaRegUser } from "react-icons/fa6";
 import { LiaBlogSolid } from "react-icons/lia";
 import { FaRegCommentDots } from "react-icons/fa";
 import { LuCircleDot } from "react-icons/lu";
+import { RouteCategorydetail } from "@/helpers/RouteName";
 
 export function AppSidebar() {
   return (
@@ -34,7 +35,7 @@ export function AppSidebar() {
                 </SidebarMenuItem><SidebarMenuItem>
                     <SidebarMenuButton>
                         <BiCategory className="mr-2" />
-                        <Link to="/"> Category</Link>
+                        <Link to={RouteCategorydetail}> Category</Link>
                     </SidebarMenuButton>
                 </SidebarMenuItem><SidebarMenuItem>
                     <SidebarMenuButton>

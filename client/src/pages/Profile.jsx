@@ -12,14 +12,16 @@ import { getEnv } from '@/helpers/getenv'
 import { showToast } from '@/helpers/showToast'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Textarea } from '@/components/ui/textarea'
-import useFetch from '@/hooks/Usefetch'
+import useFetch from '@/hooks/useFetch'
 import { IoCameraOutline } from "react-icons/io5";
 import Loading from '@/components/Loading'
-import Dropzone from 'react-dropzone'   
+import Dropzone from 'react-dropzone'
+import { Routeindex } from '@/helpers/RouteName'
+import { setUser } from '@/redux/user/userAuth'
 
 const Profile = () => {
 
-    const [filepreview, setpreview]=useState()
+    const [filepreview, setpreview] = useState()
     const [file, setfile] = useState()
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -32,13 +34,13 @@ const Profile = () => {
         method: "get",
         credentials: "include"
     })
-    
+
 
     const formSchema = z.object({
         name: z.string().min(4, "Name should be at least 4 characters"),
         bio: z.string().min(4, "Bio should be at least 4 characters"),
         email: z.string().email(),
-        password: z.string(),
+        password: z.string().optional(),
     })
 
     const form = useForm({
@@ -65,35 +67,37 @@ const Profile = () => {
 
     async function onSubmit(values) {
         try {
-            const formdata= new FormData()
-            formdata.append("file",file)
+            const userid=data.user._id 
+            const formdata = new FormData()
+            formdata.append("file", file)
             formdata.append("data", JSON.stringify(values))
-            const response = await fetch(`${getEnv("VITE_API_BASE_URL")}/auth/update-user/${data.user._id}`, {
-                method: "POST",
+            const response = await fetch(`${getEnv("VITE_API_BASE_URL")}/user/update-user/${userid}`, {
+                method: "PUT",
                 credentials: "include",
                 body: formdata
             })
-            const data = await response.json()
-            if (!response.ok) {
-                return showToast("error", data.message || "Something went wrong, please try again")
 
+            const resdata = await response.json()
+
+            if (!response.ok) {
+                return showToast("error", resdata.message || "Something went wrong, please try again")
             } else {
-                dispatch(setUser(data.user))
-                navigate(Routeindex)
-                showToast("success", "User logged in successfully")
+                dispatch(setUser(resdata.user)) // ✅ FIXED
+                // navigate(Routeindex)
+                showToast("success", "User updated successfully")
             }
 
         } catch (error) {
-            console.error("Error during login:", error);
-            showToast("error", "An error occurred while logging in. Please try again later.");
-
+            console.error("Error during login:", error)
+            showToast("error", "An error occurred while updating the data. Please try again later.")
         }
     }
-    const handlefileselection = (files)=>{
-       const file = files[0]
-       const preview= URL.createObjectURL(file)
-       setpreview(preview)
-       setfile(file)
+
+    const handlefileselection = (files) => {
+        const file = files[0]
+        const preview = URL.createObjectURL(file)
+        setpreview(preview)
+        setfile(file)
     }
     if (loading || !data?.user) return <Loading />
 
@@ -110,7 +114,7 @@ const Profile = () => {
                                 <div {...getRootProps()}>
                                     <input {...getInputProps()} />
                                     <Avatar className='size-28 relative group'>
-                                        <AvatarImage src={ filepreview? filepreview :  data?.user.avatar} />
+                                        <AvatarImage src={filepreview ? filepreview : data?.user.avatar} />
                                         <div className='h-full w-full absolute top-1/2 left-1/2  z-50 -translate-x-1/2 -translate-y-1/2 bg-black/10 border-blue-500 rounded-full cursor-pointer   justify-center items-center group-hover:flex hidden '>
                                             <IoCameraOutline color='#7c3aed' />
                                         </div>
@@ -194,8 +198,7 @@ const Profile = () => {
                                 </div>
                                 <div className='mt-5'>
 
-                                    <Button type="submit" className='w-full'>Sign In</Button>
-
+                                    <Button type="submit" className='w-full'>Update Profile</Button>
 
                                 </div>
                             </form>
