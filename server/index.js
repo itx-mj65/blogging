@@ -6,6 +6,7 @@ import connectDB from './config/DB.js'; // Assuming db.js is in the same directo
 import AuthRoute from './Routes/AuthRoites.js';
 import UserRoute from './Routes/UserRoute.js';
 import CategoryRoute from './Routes/CategoryRoute.js';
+import BlogRoute from './Routes/BlogRoute.js';
 const app = express();
 dotenv.config();
 const port = process.env.PORT || 3000;
@@ -25,6 +26,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/auth", AuthRoute)
 app.use("/api/user", UserRoute)
 app.use("/api/category", CategoryRoute)
+app.use("/api/blog", BlogRoute)
 
 
 
