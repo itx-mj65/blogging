@@ -1,3 +1,4 @@
+import Comment from '@/components/Comment'
 import Loading from '@/components/Loading'
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import { getEnv } from '@/helpers/getenv'
@@ -33,6 +34,10 @@ const Singleblogdetail = () => {
                             <img src={data.blog.featuredImage} alt="blog image" className='rounded' />
                         </div>
                         <div className='text-gray-700' dangerouslySetInnerHTML={{ __html: decode(data.blog.blogcontent) || ' ' }} />
+
+                        <div className='pt-5 border' >
+                            <Comment  blogid={data.blog._id}  />
+                        </div>
 
                     </>
                 }

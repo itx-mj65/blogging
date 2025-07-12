@@ -38,7 +38,7 @@ export const updateuser = async (req, res, next) => {
         user.email = data.email
         user.bio = data.bio
         if (data.password && data.password.length >= 4) {
-            const hash = bcrypt.hashSync(data.password);
+            const hash = bcrypt.hashSync(data.password, 10);
             user.password = hash
         }
         try {
