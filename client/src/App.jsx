@@ -2,7 +2,7 @@ import React from 'react'
 import { Button } from './components/ui/button'
 import { BrowserRouter, Route, Routes } from 'react-router'
 import Layout from './Layout/Layout'
-import { RouteAddcategory, RouteBlog, RouteBlogAdd, RouteCategorydetail, RouteEditblog, RouteEditcategory, Routeindex, RouteProfile, RouteSignin, RouteSignup } from './helpers/RouteName'
+import { RouteAddcategory, RouteBlog, RouteBlogAdd, RouteBlogdetail, RouteCategorydetail, RouteEditblog, RouteEditcategory, Routeindex, RouteProfile, RouteSignin, RouteSignup } from './helpers/RouteName'
 import Index from './pages/Index'
 import Signin from './pages/Signin'
 import SiginUp from './pages/SiginUp'
@@ -13,6 +13,7 @@ import Categorydetail from './pages/category/Categorydetail'
 import Addblog from './pages/Blog/Addblog'
 import Editblog from './pages/Blog/Editblog'
 import Blogdetail from './pages/Blog/Blogdetail'
+import Singleblogdetail from './pages/Singleblogdetail'
 
 const App = () => {
   return (
@@ -33,6 +34,7 @@ const App = () => {
             {/* blog routes  */}
             <Route path={RouteBlogAdd} element={<Addblog />} />
             <Route path={RouteEditblog()} element={<Editblog/>} />
+            <Route path={RouteBlogdetail()} element={<Singleblogdetail/>} />
             <Route path={RouteBlog} element={<Blogdetail/>} />
 
 

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Link } from 'react-router'
@@ -20,7 +20,7 @@ import { deletedata } from '@/helpers/deletedata'
 import { showToast } from '@/helpers/showToast'
 
 const Blogdetail = () => {
-    const [refresh, setrefresh] = React.useState(false)
+    const [refresh, setrefresh] = useState(false)
     const { data: blogdata, loading, error } = useFetch(`${getEnv('VITE_API_BASE_URL')}/blog/show-all-blog`, {
         method: "GET",
         credentials: "include"
@@ -34,7 +34,7 @@ const Blogdetail = () => {
             showToast("error", "Something went wrong, please try again")
         }
     }
-    if (loading) return <Loading />
+    if (!blogdata) return <Loading />
     return (
         <>
             <Card>

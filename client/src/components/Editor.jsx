@@ -60,11 +60,17 @@ import 'ckeditor5/ckeditor5.css';
 const LICENSE_KEY =
     'eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3NTM0ODc5OTksImp0aSI6IjA4MDljMTJkLTg2NDYtNDQ0Mi05Mjg0LTliZTU4MTYxMTk1OCIsInVzYWdlRW5kcG9pbnQiOiJodHRwczovL3Byb3h5LWV2ZW50LmNrZWRpdG9yLmNvbSIsImRpc3RyaWJ1dGlvbkNoYW5uZWwiOlsiY2xvdWQiLCJkcnVwYWwiLCJzaCJdLCJ3aGl0ZUxhYmVsIjp0cnVlLCJsaWNlbnNlVHlwZSI6InRyaWFsIiwiZmVhdHVyZXMiOlsiKiJdLCJ2YyI6IjY0YTU4MDJkIn0.BE-hbLcIlu-HCNznCxXHOPrmxbqBCdkPihQjQRF36uIwyItm0WiCH759uZYFC1f3Zs0S82JfjBmnjFR2cIFOWg';
 
-export default function Editor({props}) {
-    const { onChange, initialData } = props || {};
+export default function Editor({ initialData = "", onChange }) {
     const editorContainerRef = useRef(null);
     const editorRef = useRef(null);
     const [isLayoutReady, setIsLayoutReady] = useState(false);
+    const [editorData, setEditorData] = useState(initialData);
+
+    // Update data if prop changes
+    useEffect(() => {
+        setEditorData(initialData);
+    }, [initialData]);
+
 
     useEffect(() => {
         setIsLayoutReady(true);
@@ -231,7 +237,7 @@ export default function Editor({props}) {
                         }
                     ]
                 },
-                initialData:initialData || '<p>Type or paste your content here!</p>',
+                initialData: initialData,
                 licenseKey: LICENSE_KEY,
                 link: {
                     addTargetToExternalLinks: true,
@@ -322,7 +328,13 @@ export default function Editor({props}) {
                 ref={editorContainerRef}
             >
                 <div className="editor-container__editor">
-                    <div ref={editorRef}>{editorConfig && <CKEditor onChange={onChange} editor={ClassicEditor} config={editorConfig} />}</div>
+                    <div ref={editorRef}>{editorConfig && <CKEditor
+                        editor={ClassicEditor}
+                        data={editorData}          // comes from initialData via useState
+                        config={editorConfig}
+                        onChange={onChange}        // received from parent
+                    />
+                    }</div>
                 </div>
             </div>
         </div>
