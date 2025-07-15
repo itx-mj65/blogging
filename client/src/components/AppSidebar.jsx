@@ -16,7 +16,7 @@ import { FaRegUser } from "react-icons/fa6";
 import { LiaBlogSolid } from "react-icons/lia";
 import { FaRegCommentDots } from "react-icons/fa";
 import { LuCircleDot } from "react-icons/lu";
-import { RouteBlog, RouteCategorydetail } from "@/helpers/RouteName";
+import { RouteBlog, RouteBlogByCategory, RouteCategorydetail } from "@/helpers/RouteName";
 import useFetch from "@/hooks/useFetch";
 import { getEnv } from "@/helpers/getenv";
 import Loading from "./Loading";
@@ -74,7 +74,7 @@ export function AppSidebar() {
                                 <SidebarMenuItem key={category._id}>
                                     <SidebarMenuButton>
                                         <LuCircleDot className="mr-2" />
-                                        <Link to={``}>{category.name}</Link>
+                                        <Link to={RouteBlogByCategory(category.slug)}>{category.name}</Link>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
                             )

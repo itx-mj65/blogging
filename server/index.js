@@ -7,6 +7,7 @@ import AuthRoute from './Routes/AuthRoites.js';
 import UserRoute from './Routes/UserRoute.js';
 import CategoryRoute from './Routes/CategoryRoute.js';
 import BlogRoute from './Routes/BlogRoute.js';
+import BlogLikeRoute from './Routes/BloglikeRoute.js';
 const app = express();
 dotenv.config();
 const port = process.env.PORT || 3000;
@@ -27,6 +28,7 @@ app.use("/api/auth", AuthRoute)
 app.use("/api/user", UserRoute)
 app.use("/api/category", CategoryRoute)
 app.use("/api/blog", BlogRoute)
+app.use("/api/like", BlogLikeRoute)
 
 
 

@@ -13,7 +13,6 @@ import { z } from 'zod'
 import Googlelogin from '@/components/Googlelogin'
 
 const SignUp = () => {
-    console.log(getEnv('VITE_API_BASE_URL'))
     const navigate = useNavigate()
 
     const formSchema = z.object({

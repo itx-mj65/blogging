@@ -75,7 +75,6 @@ const Addblog = () => {
   }
 
   async function onSubmit(values) {
-    console.log(values)
     try {
       const newvalues = { ...values, author: user.user._id }
       const formdata = new FormData()

@@ -2,6 +2,7 @@ import cloudinary from "../config/cloudinary.js";
 import { handleError } from "../helper/handleError.js";
 import Blog from "../models/blogModel.js";
 import { encode } from "entities";
+import Category from "../models/categoryModel.js";
 export const addBlog = async (req, res, next) => {
     try {
         const data = JSON.parse(req.body.data);
@@ -40,7 +41,7 @@ export const updateBlog = async (req, res, next) => {
     try {
         const { blogid } = req.params;
         const data = JSON.parse(req.body.data);
-        const {  category, title, slug, blogcontent } = data
+        const { category, title, slug, blogcontent } = data
         let secimage = "";
         if (req.file) {
             const uploadResult = await cloudinary.uploader.upload(
@@ -160,4 +161,61 @@ export const showBlogBySlug = async (req, res, next) => {
         next(handleError(500, "Internal Server Error while showing blog"));
 
     }
+}
+
+export const ShowRelatedblogs = async (req, res, next) => {
+    try {
+        const { category, blog } = req.params
+        const categorydata = await Category.findOne({ slug: category })
+        if (!categorydata) {
+            return next(handleError(404, 'no data found from category'))
+        }
+        const categoryid = categorydata._id
+        const relatedblog = await Blog.find({ category: categoryid, slug: { $ne: blog } }).lean().exec()
+        res.status(200).json({
+            success: true,
+            relatedblog
+        })
+
+
+    } catch (error) {
+        next(handleError(500, `internal server error, ${error.message}`))
+    }
+
+}
+export const showBlogByCategory = async (req, res, next) => {
+    try {
+        const { category } = req.params
+        const categorydata = await Category.findOne({ slug: category })
+        if (!categorydata) {
+            return next(handleError(404, 'no data found from category'))
+        }
+        const categoryid = categorydata._id
+        const blogs = await Blog.find({ category: categoryid }).populate("author", "name avatar role").populate("category", "name slug").lean().exec()
+        res.status(200).json({
+            success: true,
+            blogs,
+            categorydata
+        })
+
+
+    } catch (error) {
+        next(handleError(500, `internal server error, ${error.message}`))
+    }
+
+}
+export const Serach = async (req, res, next) => {
+    try {
+        const { q } = req.query
+        const blogs = await Blog.find({ title: { $regex: q, $options: "i" } }).populate("author", "name avatar role").populate("category", "name slug").lean().exec()
+        res.status(200).json({
+            success: true,
+            blogs
+        })
+
+
+    } catch (error) {
+        next(handleError(500, `internal server error, ${error.message}`))
+    }
+
 }

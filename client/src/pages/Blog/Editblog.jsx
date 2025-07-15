@@ -42,7 +42,6 @@ const Editblog = () => {
     method: "GET",
     credentials: "include"
   }, [blogid])
-  console.log("blogdata", blogdata)
 
   useEffect(() => {
     if (blogdata?.blog) {
@@ -87,7 +86,6 @@ const Editblog = () => {
   }
 
   async function onSubmit(values) {
-    console.log(values)
     try {
       const formdata = new FormData()
       formdata.append("file", file)
@@ -223,7 +221,6 @@ const Editblog = () => {
                   name="blogcontent"
                   render={({ field }) => (
                     <FormItem>
-                      {console.log(blogdata?.blog?.blogcontent)}
                       <FormLabel>Blog Content</FormLabel>
                       <FormControl>
                         <Editor initialData={blogdata?.blog?.blogcontent ? decode(blogdata.blog.blogcontent) : ""}

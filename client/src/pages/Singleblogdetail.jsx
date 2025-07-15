@@ -1,5 +1,9 @@
+
 import Comment from '@/components/Comment'
+import Commentcount from '@/components/Commentcount'
+import Likecount from '@/components/Likecount'
 import Loading from '@/components/Loading'
+import Relatedblog from '@/components/Relatedblog'
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import { getEnv } from '@/helpers/getenv'
 import useFetch from '@/hooks/useFetch'
@@ -9,11 +13,11 @@ import { useParams } from 'react-router'
 
 
 const Singleblogdetail = () => {
-    const { blog } = useParams()
+    const { blog, category } = useParams()
     const { data, loading, error } = useFetch(`${getEnv('VITE_API_BASE_URL')}/blog/show/${blog}`, {
         method: "GET",
         credentials: "include"
-    })
+    },[blog,category])
 
     if (!data) return <Loading />
     return (
@@ -27,7 +31,15 @@ const Singleblogdetail = () => {
                                 <Avatar >
                                     <AvatarImage src={data.blog.author.avatar} />
                                 </Avatar>
-                                <span>{data.blog.author.name}</span>
+                                <div className='flex flex-col' >
+                                    <span className='font-bold' >{data.blog.author.name}</span>
+                                    <span className='text-gray-500 text-[14px]' >{new Date(data.blog.createdAt).toLocaleDateString()}</span>
+                                </div>
+                            </div>
+                            <div className='flex items-center gap-6' >
+                                <Likecount props={{ blogid: data.blog._id }} />
+                                <Commentcount props={{ blogid: data.blog._id }} />
+                                
                             </div>
                         </div>
                         <div className='my-4' >
@@ -35,14 +47,18 @@ const Singleblogdetail = () => {
                         </div>
                         <div className='text-gray-700' dangerouslySetInnerHTML={{ __html: decode(data.blog.blogcontent) || ' ' }} />
 
-                        <div className='pt-5 border' >
-                            <Comment  blogid={data.blog._id}  />
+                        <div className='pt-5 ' >
+                            <Comment blogid={data.blog._id} />
                         </div>
+
+
 
                     </>
                 }
             </div>
-            <div className=' border rounded  w-[30%]' ></div>
+            <div className=' border rounded  w-[30%] p-5'  >
+                <Relatedblog  props={{category:data.blog.category, currentblog:blog}}  />
+            </div>
         </div>
     )
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { FaRegComments } from "react-icons/fa6";
@@ -12,9 +12,11 @@ import { getEnv } from '@/helpers/getenv';
 import { useSelector } from 'react-redux';
 import { RouteSignin } from '@/helpers/RouteName';
 import { Link } from 'react-router';
+import Allcomments from './Allcomments';
 const Comment = (props) => {
-    const user=useSelector((state) => state.user)
-    console.log(localStorage.getItem("user"))
+
+    const [newcomment, setnewcomment] = useState("")
+    const user = useSelector((state) => state.user)
     const formSchema = z.object({
         comment: z.string().min(4, "Comment should be at least 4 characters"),
     })
@@ -29,7 +31,7 @@ const Comment = (props) => {
     async function onSubmit(values) {
         values.blogid = props.blogid; // Add blogid to the comment data
         values.author = user.user._id; // Get the user ID from the Redux store
-     
+
         try {
             const response = await fetch(`${getEnv("VITE_API_BASE_URL")}/blog/comment`, {
                 method: "POST",
@@ -45,6 +47,7 @@ const Comment = (props) => {
 
             } else {
                 showToast("success", "Comment Added successfully")
+                setnewcomment(data.comment)
                 form.reset()
             }
 
@@ -58,41 +61,45 @@ const Comment = (props) => {
 
 
     return (
-        <div>
+        <div className='border-t'>
 
             <div className='flex  items-center gap-2' >
                 <FaRegComments className='text-violet-500' />
                 <h4 className='text-gray-700 font-bold text-2xl'> Comments</h4>
             </div>
 
-            { user.isLoggedIn ?
-            <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} >
-                    <div className='mb-3'>
-                        <FormField
-                            control={form.control}
-                            name="comment"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Comment</FormLabel>
-                                    <FormControl>
-                                        <Textarea type='text' placeholder="Enter Comment" {...field} />
-                                    </FormControl>
+            {user.isLoggedIn ?
+                <Form {...form} className='border-0' >
+                    <form onSubmit={form.handleSubmit(onSubmit)} >
+                        <div className='mb-3'>
+                            <FormField
+                                control={form.control}
+                                name="comment"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Comment</FormLabel>
+                                        <FormControl>
+                                            <Textarea type='text' placeholder="Enter Comment" {...field} />
+                                        </FormControl>
 
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                    </div>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
 
-                    <div className='mt-5'>
+                        <div className='mt-5'>
 
-                        <Button type="submit" className='w-full'> Save</Button>
+                            <Button type="submit" className='w-full'> Add Comment</Button>
 
-                    </div>
-                </form>
-            </Form>: <Button className='mt-5'  ><Link to={RouteSignin}  >Login to Comment</Link></Button>
+                        </div>
+                    </form>
+                </Form> : <Button className='mt-5'  ><Link to={RouteSignin}  >Login to Comment</Link></Button>
             }
+
+            <div>
+                <Allcomments props={{ blogid: props.blogid, newcomment }} />
+            </div>
 
         </div>
     )
