@@ -16,13 +16,14 @@ import { FaRegUser } from "react-icons/fa6";
 import { LiaBlogSolid } from "react-icons/lia";
 import { FaRegCommentDots } from "react-icons/fa";
 import { LuCircleDot } from "react-icons/lu";
-import { RouteBlog, RouteBlogByCategory, RouteCategorydetail } from "@/helpers/RouteName";
+import { RouteAllUser, RouteBlog, RouteBlogByCategory, RouteCategorydetail, RouteGetAllComment } from "@/helpers/RouteName";
 import useFetch from "@/hooks/useFetch";
 import { getEnv } from "@/helpers/getenv";
 import Loading from "./Loading";
+import { useSelector } from "react-redux";
 
 export function AppSidebar() {
-
+    const user = useSelector(state => state.user)
     const { data: categorydata, loading, error } = useFetch(`${getEnv('VITE_API_BASE_URL')}/category/all-category`, {
         method: "GET",
         credentials: "include"
@@ -42,27 +43,36 @@ export function AppSidebar() {
                                 <GoHome className="mr-2" />
                                 <Link to="/"> Home</Link>
                             </SidebarMenuButton>
-                        </SidebarMenuItem><SidebarMenuItem>
-                            <SidebarMenuButton>
-                                <BiCategory className="mr-2" />
-                                <Link to={RouteCategorydetail}> Category</Link>
-                            </SidebarMenuButton>
-                        </SidebarMenuItem><SidebarMenuItem>
-                            <SidebarMenuButton>
-                                <LiaBlogSolid className="mr-2" />
-                                <Link to={RouteBlog}> Blogs</Link>
-                            </SidebarMenuButton>
-                        </SidebarMenuItem><SidebarMenuItem>
-                            <SidebarMenuButton>
-                                <FaRegCommentDots className="mr-2" />
-                                <Link to="/"> Comments</Link>
-                            </SidebarMenuButton>
-                        </SidebarMenuItem><SidebarMenuItem>
-                            <SidebarMenuButton>
-                                <FaRegUser className="mr-2" />
-                                <Link to="/"> Users</Link>
-                            </SidebarMenuButton>
                         </SidebarMenuItem>
+                        {user && user.isLoggedIn ? <>
+
+                            <SidebarMenuItem>
+                                <SidebarMenuButton>
+                                    <LiaBlogSolid className="mr-2" />
+                                    <Link to={RouteBlog}> Blogs</Link>
+                                </SidebarMenuButton>
+                            </SidebarMenuItem>
+                            <SidebarMenuItem>
+                                <SidebarMenuButton>
+                                    <FaRegCommentDots className="mr-2" />
+                                    <Link to={RouteGetAllComment}> Comments</Link>
+                                </SidebarMenuButton>
+                            </SidebarMenuItem>
+                        </> : <></>}
+                        {user && user.isLoggedIn && user.user.role == "admin" ? <>
+                            <SidebarMenuItem>
+                                <SidebarMenuButton>
+                                    <BiCategory className="mr-2" />
+                                    <Link to={RouteCategorydetail}> Category</Link>
+                                </SidebarMenuButton>
+                            </SidebarMenuItem>
+                            <SidebarMenuItem>
+                                <SidebarMenuButton>
+                                    <FaRegUser className="mr-2" />
+                                    <Link to={RouteAllUser}> Users</Link>
+                                </SidebarMenuButton>
+                            </SidebarMenuItem>
+                        </> : <></>}
                     </SidebarMenu>
                 </SidebarGroup>
                 <SidebarGroup >

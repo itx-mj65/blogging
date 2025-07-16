@@ -17,7 +17,7 @@ const SearchResult = () => {
         <div className='flex justify-baseline mx-6 py-3 text-xl mb-6 text-violet-500 border-b items-center gap-3'><BiSearch />
         {q}
         </div>
-        <div className='grid grid-cols-3 gap-3 px-6' >{
+        <div className='grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-3 px-6' >{
             blogdata && blogdata.blogs.length > 0 ? blogdata.blogs.map((blog) => {
                 return <Blogcard key={blog._id} blog={blog} />
             }) : <div className='text-center text-2xl font-bold'>No Blogs Found</div>

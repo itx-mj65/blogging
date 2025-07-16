@@ -21,8 +21,8 @@ const Singleblogdetail = () => {
 
     if (!data) return <Loading />
     return (
-        <div className='flex justify-between gap-20 px-12' >
-            <div className=' border rounded  w-[70%] p-5' >
+        <div className='md:flex-nowrap flex-wrap  flex justify-between gap-20 px-12' >
+            <div className=' border rounded  md:w-[70%] w-full p-5' >
                 {data && data.blog &&
                     <>
                         <h1 className='mb-4 text-2xl font-bold'>{data.blog.title}</h1>
@@ -56,7 +56,7 @@ const Singleblogdetail = () => {
                     </>
                 }
             </div>
-            <div className=' border rounded  w-[30%] p-5'  >
+            <div className=' border rounded  md:w-[30%] w-full p-5'  >
                 <Relatedblog  props={{category:data.blog.category, currentblog:blog}}  />
             </div>
         </div>

@@ -43,6 +43,7 @@ export const login = async (req, res, next) => {
                     name: user.name,
                     email: user.email,
                     avatar: user.avatar,
+                    role: user.role,
                     id: user._id,
                 }, process.env.JWT_SECRET, { expiresIn: "10h" });
                 res.cookie("access_token", token, {
@@ -107,6 +108,7 @@ export const googlelogin = async (req, res, next) => {
                 name: user.name,
                 email: user.email,
                 avatar: user.avatar,
+                role: user.role,
                 id: user._id,
             }, process.env.JWT_SECRET, { expiresIn: "10h" });
             res.cookie("access_token", token, {

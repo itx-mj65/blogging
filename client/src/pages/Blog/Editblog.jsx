@@ -49,7 +49,7 @@ const Editblog = () => {
       form.setValue('category', blogdata.blog.category._id)
       form.setValue('slug', blogdata.blog.slug)
       form.setValue('blogcontent', decode(blogdata.blog.blogcontent))
-      setpreview(blogdata?.blog?.featuredImage || "")
+      setpreview(blogdata.blog?.featuredImage || "")
     }
 
   }, [blogdata])
@@ -88,7 +88,9 @@ const Editblog = () => {
   async function onSubmit(values) {
     try {
       const formdata = new FormData()
-      formdata.append("file", file)
+      if (file) {
+        formdata.append("file", file)
+      }
       formdata.append("data", JSON.stringify(values))
       const response = await fetch(`${getEnv("VITE_API_BASE_URL")}/blog/update/${blogid}`, {
         method: "PUT",

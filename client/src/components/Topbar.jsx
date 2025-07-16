@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button } from './ui/button'
-import { Link, useNavigate} from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { MdLogin } from "react-icons/md";
 import SearchBox from './SearchBox';
-import { Routeindex, RouteProfile, RouteSignin } from '@/helpers/RouteName';
+import { RouteBlogAdd, Routeindex, RouteProfile, RouteSignin } from '@/helpers/RouteName';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     DropdownMenu,
@@ -15,18 +15,26 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { FaRegUser } from "react-icons/fa";
-import { FaPlus } from "react-icons/fa6";   
+import { FaPlus } from "react-icons/fa6";
 import { MdLogout } from "react-icons/md";
 import { showToast } from '@/helpers/showToast';
 import { getEnv } from '@/helpers/getenv';
 import { removeUser } from '@/redux/user/userAuth';
+import { IoSearch } from "react-icons/io5";
+import { useSidebar } from './ui/sidebar';
+import { MdOutlineMenu } from "react-icons/md";
 
 const Topbar = () => {
     const user = useSelector((state) => state.user)
-    const navigate=useNavigate()
-    const dispatch=useDispatch()
+    const [showserach, setshowserach] = useState(false)
+    const { toggleSidebar } = useSidebar()
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
 
-    const handlelogout = async ()=>{
+    const toggleserach = () => {
+        setshowserach(!showserach)
+    }
+    const handlelogout = async () => {
         try {
             const response = await fetch(`${getEnv("VITE_API_BASE_URL")}/auth/logout`, {
                 method: "GET",
@@ -52,9 +60,18 @@ const Topbar = () => {
 
         <>
             <div className='fixed flex items-center justify-between h-16 z-20 w-full bg-white px-14'>
-                <div><h2>Logo</h2></div>
-                <div className=" w-130 mx-4"> <SearchBox /> </div>
-                <div>
+                <div className='flex justify-center items-center gap-2'>
+                    <MdOutlineMenu onClick={toggleSidebar} className='md:hidden block' />
+                    <h2>Logo</h2></div>
+                <div className=" w-130 mx-4">
+
+                    <div className={`md:relative absolute md:block  bg-white left-0 w-full md:top-0 top-16 md:p-0 p-5 ${showserach ? 'block' : "hidden"}  `}><SearchBox /> </div>
+
+                </div>
+                <div className='flex items-center gap-5'>
+                    <div>
+                        <IoSearch size={25} onClick={toggleserach} className='md:hidden block' />
+                    </div>
                     {user.isLoggedIn === false ? (
                         <Button asChild className='rounded-full'>
                             <Link to={RouteSignin} className="flex items-center gap-1 rounded-full">
@@ -72,15 +89,15 @@ const Topbar = () => {
                                 <p>{user.user.email}</p>
                             </DropdownMenuLabel>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem asChild   className='cursor-pointer' >
-                                <Link to={RouteProfile} >  <FaRegUser/>  Profile</Link>
+                            <DropdownMenuItem asChild className='cursor-pointer' >
+                                <Link to={RouteProfile} >  <FaRegUser />  Profile</Link>
                             </DropdownMenuItem>
-                            <DropdownMenuItem asChild  className='cursor-pointer'>
-                                <Link to='' >  <FaPlus/>  Add Blog</Link>
+                            <DropdownMenuItem asChild className='cursor-pointer'>
+                                <Link to={RouteBlogAdd} >  <FaPlus />  Add Blog</Link>
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem asChild  onClick={handlelogout}  className='cursor-pointer'>
-                                <Link to='' > <MdLogout color='red'/>  LogOut</Link>
+                            <DropdownMenuItem asChild onClick={handlelogout} className='cursor-pointer'>
+                                <Link to='' > <MdLogout color='red' />  LogOut</Link>
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>

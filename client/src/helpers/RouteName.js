@@ -4,6 +4,8 @@ export const RouteSignup = "/sign-up";
 export const RouteProfile = "/profile";
 export const RouteCategorydetail = "/categories";
 export const RouteAddcategory = "/category/add";
+export const RouteAllUser = "/all-user";
+export const RouteGetAllComment = "/get-all-comments";
 export const RouteEditcategory = (category_id) => {
     if (category_id) {
         return `/category/edit/${category_id}`

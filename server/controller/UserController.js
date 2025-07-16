@@ -25,12 +25,48 @@ export const getuser = async (req, res, next) => {
     }
 
 }
+export const getAllUser = async (req, res, next) => {
+
+    try {
+        const users = await User.find().sort({createdAt:-1}).lean().exec()
+
+
+        res.status(200).json({
+            succuss: true,
+            message: "use data found",
+            users
+        })
+
+    } catch (error) {
+        next(handleError(500, error.message + "mj"))
+
+    }
+
+}
+export const DelateUser = async (req, res, next) => {
+
+    try {
+        const {userid}=req.params
+        const users = await User.findByIdAndDelete(userid)
+
+
+        res.status(200).json({
+            succuss: true,
+            message: "User Deleted",
+        })
+
+    } catch (error) {
+        next(handleError(500, error.message + "mj"))
+
+    }
+
+}
 
 
 
 export const updateuser = async (req, res, next) => {
     const { userid } = req.params
-    console.log(userid)
+    
     const data = JSON.parse(req.body.data)
     try {
         const user = await User.findById(userid)

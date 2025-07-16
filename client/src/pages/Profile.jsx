@@ -114,7 +114,7 @@ const Profile = () => {
                                 <div {...getRootProps()}>
                                     <input {...getInputProps()} />
                                     <Avatar className='size-28 relative group'>
-                                        <AvatarImage src={filepreview ? filepreview : data?.user.avatar} />
+                                        <AvatarImage className='object-cover' src={filepreview ? filepreview : data?.user.avatar} />
                                         <div className='h-full w-full absolute top-1/2 left-1/2  z-50 -translate-x-1/2 -translate-y-1/2 bg-black/10 border-blue-500 rounded-full cursor-pointer   justify-center items-center group-hover:flex hidden '>
                                             <IoCameraOutline color='#7c3aed' />
                                         </div>

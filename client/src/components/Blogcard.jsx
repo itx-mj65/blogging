@@ -21,7 +21,7 @@ const Blogcard = (props) => {
                             <p>{props.blog.author.name}</p>
                         </div>
 
-                        {user.user?.role === 'admin' && 
+                        {props.blog.author.role === 'admin' && 
                             <Badge variant='outline' className='bg-violet-500' >Admin</Badge>}
                     </div>
 

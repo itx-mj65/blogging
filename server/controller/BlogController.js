@@ -41,23 +41,30 @@ export const updateBlog = async (req, res, next) => {
     try {
         const { blogid } = req.params;
         const data = JSON.parse(req.body.data);
-        const { category, title, slug, blogcontent } = data
-        let secimage = "";
+        const { category, title, slug, blogcontent } = data;
+
+        let blog;
         if (req.file) {
             const uploadResult = await cloudinary.uploader.upload(
                 req.file.path,
                 { folder: "bloggong", resource_type: "auto" }
-            )
+            );
 
-            secimage = uploadResult.secure_url
+            blog = await Blog.findByIdAndUpdate(blogid, {
+                category,
+                title,
+                slug,
+                blogcontent: encode(blogcontent),
+                featuredImage: uploadResult.secure_url,
+            }, { new: true });
+        } else {
+            blog = await Blog.findByIdAndUpdate(blogid, {
+                category,
+                title,
+                slug,
+                blogcontent: encode(blogcontent),
+            }, { new: true });
         }
-        const blog = await Blog.findByIdAndUpdate(blogid, {
-            category,
-            title,
-            slug,
-            blogcontent: encode(blogcontent),
-            featuredImage: secimage
-        }, { new: true });
 
         if (!blog) {
             return res.status(404).json({
@@ -74,9 +81,9 @@ export const updateBlog = async (req, res, next) => {
 
     } catch (error) {
         next(handleError(500, "Internal Server Error while editing blog"));
-
     }
 }
+
 export const showBlog = async (req, res, next) => {
     try {
         const { blogid } = req.params;
@@ -118,6 +125,34 @@ export const deleteBlog = async (req, res, next) => {
     }
 }
 export const showAllBlogs = async (req, res, next) => {
+    try {
+        const user = req.user
+        let blogs
+        if (user.role == "admin") {
+
+            blogs = await Blog.find().populate("author", "name avatar role ").populate("category", "name slug").sort({ createdAt: -1 }).lean().exec();
+        } else {
+            blogs = await Blog.find({ author: user.id }).populate("author", "name avatar role ").populate("category", "name slug").sort({ createdAt: -1 }).lean().exec();
+        }
+        if (!blogs) {
+            return res.status(404).json({
+                success: false,
+                message: "No blogs found"
+            });
+        } else {
+            return res.status(200).json({
+                success: true,
+                message: "Blogs fetched successfully",
+                blogs
+            });
+        }
+
+    } catch (error) {
+        next(handleError(500, "Internal Server Error while showing all blogs"));
+
+    }
+}
+export const Blogs = async (req, res, next) => {
     try {
         const blogs = await Blog.find().populate("author", "name avatar role ").populate("category", "name slug").sort({ createdAt: -1 }).lean().exec();
         if (!blogs) {

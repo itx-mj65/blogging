@@ -113,6 +113,7 @@ const Signin = () => {
                                 <Link to={RouteSignup} className='text-blue-500 hover:underline'>Sign Up</Link>
                             </div>
                         </div>
+                        <div className='text-center mt-2' >Back to <Link className='font-bold text-violet-500 underline' to={Routeindex} >Home</Link></div>
                     </form>
                 </Form>
             </Card>
