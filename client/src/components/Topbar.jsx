@@ -59,13 +59,13 @@ const Topbar = () => {
     return (
 
         <>
-            <div className='fixed flex items-center justify-between h-16 z-20 w-full bg-white px-14'>
+            <div className='fixed flex items-center justify-between h-16 z-20 w-full bg-white px-7 py-10 md:px-14'>
                 <div className='flex justify-center items-center gap-2'>
-                    <MdOutlineMenu onClick={toggleSidebar} className='md:hidden block' />
-                    <h2>Logo</h2></div>
-                <div className=" w-130 mx-4">
+                    <MdOutlineMenu onClick={toggleSidebar} size={30} className='md:hidden block' />
+                    <img src='/logo.png' className='h-15'  alt='logo'   /></div>
+                <div className=" mx-4  w-auto md:w-130">
 
-                    <div className={`md:relative absolute md:block  bg-white left-0 w-full md:top-0 top-16 md:p-0 p-5 ${showserach ? 'block' : "hidden"}  `}><SearchBox /> </div>
+                    <div className={`md:relative absolute md:block   bg-white left-0 w-full md:top-0 top-16 md:p-0 p-5 ${showserach ? 'block' : "hidden"}  `}><SearchBox /> </div>
 
                 </div>
                 <div className='flex items-center gap-5'>
@@ -73,7 +73,7 @@ const Topbar = () => {
                         <IoSearch size={25} onClick={toggleserach} className='md:hidden block' />
                     </div>
                     {user.isLoggedIn === false ? (
-                        <Button asChild className='rounded-full'>
+                        <Button asChild className='rounded-full z-40 bg-violet-500'>
                             <Link to={RouteSignin} className="flex items-center gap-1 rounded-full">
                                 <span className="flex items-center gap-1" ><MdLogin /> Sign In</span>
                             </Link>

@@ -31,9 +31,9 @@ export function AppSidebar() {
 
     if (!categorydata) return <Loading />;
     return (
-        <Sidebar className='pt-5'>
+        <Sidebar className='pt-9'>
             <SidebarHeader className='bg-white' >
-                <h2>Dashboard</h2>
+               <img src="/logo.png" alt="logo" className="w-25"  />
             </SidebarHeader>
             <SidebarContent className='bg-white' >
                 <SidebarGroup >
