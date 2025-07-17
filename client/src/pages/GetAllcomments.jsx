@@ -65,9 +65,9 @@ const GetAllcomments = () => {
                                 data.comments.map(comment => {
                                     return <TableRow key={comment._id} >
                                         <TableCell >{new Date(comment.createdAt).toLocaleDateString()}</TableCell>
-                                        <TableCell >{comment.author.name}</TableCell>
-                                        <TableCell >{comment.blogid.title}</TableCell>
-                                        <TableCell >{comment.comment}</TableCell>
+                                        <TableCell >{comment.author?.name}</TableCell>
+                                        <TableCell >{comment.blogid?.title}</TableCell>
+                                        <TableCell >{comment?.comment}</TableCell>
                                         <TableCell className='flex gap-3' >
                                             
                                             <Button onClick={() => handledelete(comment._id)} variant='outline' className='hover:bg-violet-500 hover:text-white' >
