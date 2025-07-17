@@ -31,11 +31,11 @@ export function AppSidebar() {
 
     if (!categorydata) return <Loading />;
     return (
-        <Sidebar className='pt-9'>
+        <Sidebar >
             <SidebarHeader className='bg-white' >
                <img src="/logo.png" alt="logo" className="w-25"  />
             </SidebarHeader>
-            <SidebarContent className='bg-white' >
+            <SidebarContent className='bg-white pt-7' >
                 <SidebarGroup >
                     <SidebarMenu >
                         <SidebarMenuItem>
